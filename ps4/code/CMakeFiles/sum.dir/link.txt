@@ -1,0 +1,1 @@
+/usr/bin/cc      CMakeFiles/sum.dir/sum.c.o CMakeFiles/sum.dir/sumlib.c.o  -o sum -rdynamic -lm 

@@ -1,0 +1,29 @@
+Introduction to supercomputers
+
+Problem set 1
+
+Exercise 1
+	We should include 7 digits.
+
+Exercise 2
+	4.25 = 100.01 = 1.0001 * 2^2
+	S = 0
+	E - B = 2
+	E = B + 2 = 127 + 2 = 129
+	E = 129 = 128 + 1 = 10000001
+
+Exercise 3
+	2^-52 = 2.22044..*10^-16.
+	We therefore have 16 digits of accuracy using double precision.
+
+Exercise 4
+	Use two loops where the innerloop goes up to approximatly 10^9
+
+Exercise 5
+	Vector sum: 2n
+
+	Matrix-vector product: n*(n + (n-1)) = n*(2n -1)
+
+Exercise 6
+	
+ 
