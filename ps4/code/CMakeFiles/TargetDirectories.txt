@@ -1,1 +1,0 @@
-/home/sindre/Documents/NTNU/Superdatamaskiner/ps4/code/CMakeFiles/sum.dir
