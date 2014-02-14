@@ -1,4 +1,4 @@
-# Install script for directory: /home/sindre/Documents/NTNU/Superdatamaskiner/ps4/code
+# Install script for directory: /home/sindre/Documents/NTNU/Superdatamaskiner/problemsets/ps4/code
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/sindre/Documents/NTNU/Superdatamaskiner/ps4/code/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/sindre/Documents/NTNU/Superdatamaskiner/problemsets/ps4/code/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/sindre/Documents/NTNU/Superdatamaskiner/ps4/code/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/sindre/Documents/NTNU/Superdatamaskiner/problemsets/ps4/code/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

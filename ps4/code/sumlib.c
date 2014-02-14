@@ -4,6 +4,7 @@
 double* create_vector(int size, double (*func_p)(int)){
 	/* Creates an array with elements specified by the passed function and values*/
 	double* vec = (double*) malloc(sizeof(double)*size);
+	#pragma omp paralell for schedule(static) private(i) 
 	for(int i = 0; i < size; i++){
 		vec[i] = (*func_p)(i+1);
 	}
@@ -12,6 +13,7 @@ double* create_vector(int size, double (*func_p)(int)){
 
 double sum_vector(double* vec, int size){
 	double sum = 0;
+	#pragma omp parallel for schedule(static) reduction(+:sum)
 	for(int i = 0; i < size; i++){
 		sum += vec[i];
 	}
