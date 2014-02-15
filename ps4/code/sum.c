@@ -2,10 +2,18 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <math.h>
+#include <string.h>
 
+#ifdef HAVE_OPENMP
 #include <omp.h>
+#endif
+
+#ifdef HAVE_MPI
+#include <mpi.h>
+#endif
 
 #define K_MAX  14
+#define K_MIN  3
 #define PI     4*atan(1)
 
 double v (int i) { return 1.0/ (i*i);}
@@ -25,25 +33,89 @@ double WallTime ()
 }
 
 int main(int argc, char** argv){
-	int n, t1, t2, n_max;
-	double s, temp_sum, start, end;
+	// Initialize some needed values...
+	int n, t1, t2, n_max, k, num_elem, i;
+	double s, temp_sum, total_sum, start, end;
 	double* list;
-	
-	s = (PI*PI)/6;
-	printf("s=%lf\n", s);
+	char test[20]; 
 
-	n_max = pow(2, K_MAX);	
-	list = create_vector(n_max, v);
+	int rank, size, tag;	
 	
+	#ifdef HAVE_MPI
+	// MPI variables
+	MPI_Status status;	
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	tag = 100;
+	#else
+	size = 1;
+	rank = 0;
+	#endif
+
+	// Initialize and set the actual s value	
+	s = (PI*PI)/6;
+		
+	// Calculate the maximal value of n
+	n_max = pow(2, K_MAX);	
+
+	// Find the number of lists needed
+	#ifdef HAVE_MPI
+	num_elem = n_max/size;   
+	#else
+	num_elem = n_max;
+	#endif
+	
+	// Set start-time
 	start = WallTime();
-			
-	for(int k = 0; k <= K_MAX; k++){
-		n = pow(2, k);
-		temp_sum = sum_vector(list, n);        
-		printf("n=%d, s_n=%lf, s-s_n=%lf\n", n, temp_sum, s-temp_sum);	
+
+	// Allocate vector for all nodes
+	list = allocate_vector(num_elem);	
+	
+	#ifdef HAVE_MPI
+	if(rank == 0){
+		// Send of work...
+		for(i=1; i < size; i++){
+			fill_vector(list, i, num_elem, v, size);
+			MPI_Send(list, num_elem, MPI_DOUBLE, i, tag, MPI_COMM_WORLD);
+		}	
+		fill_vector(list, 0, num_elem, v, size);
+
+	} else{
+		MPI_Recv(list, num_elem, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD, &status);
+		printf("node %d received a message...", rank);
 	}
+	#else
+	fill_vector(list, 0, num_elem, v, 1);
+	#endif
+	
+
+	for(k = K_MIN; k <= K_MAX; k++){
+		#ifdef HAVE_MPI
+		n = pow(2,k) / num_elem;
+		#else
+		n = pow(2,k);
+		#endif
+		temp_sum = sum_vector(list, n);
+		#ifdef HAVE_MPI
+		MPI_Reduce(temp_sum, total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+		#else	
+		total_sum = temp_sum;
+		#endif
+		if(rank == 0)  printf("n=%d, s_n=%e, s-s_n=%e\n", n, total_sum, s-total_sum);	
+	}
+
+	// Report end-time
 	printf("elapsed time: %lf\n", WallTime()-start);
 	
+	// Free memory
 	free_vector(list);
+	
+	#ifdef HAVE_MPI
+	// Finalize MPI
+	MPI_Finalize();
+	#endif
 	return 0;
 }
+
+

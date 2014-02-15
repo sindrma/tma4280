@@ -1,0 +1,43 @@
+
+\documentclass{article}
+
+\title{Introduction to Supercomputers: Problem Set 4}
+\author{Sindre Magnussen}
+\date{January 2014}
+
+\usepackage{pgf}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\begin{document}
+
+\maketitle
+
+\section*{Introduction and answers}
+	In this assignment we were supposed to write a program that calculates the sum in (1) with a range of n-values and compares the result with equation (3):
+	
+	\begin{align}
+	S_n &= \sum_{i = 1}^{n} v(i) \\
+	v(i) &= \frac{1}{i^2},\qquad i = 1,\ldots,n \\
+	S &= \lim_{n\to\infty} S_n = \frac{\pi^2}{6}
+	\end{align}
+	
+	The code I have written makes it possible to enable both serial, OpenMP-code and at MPI-code. Both MPI and OpenMP should work together. The code has been tested on a local machine. See the following explanation of how to enable the different run-options: 
+
+\begin{list}{}{}
+\item \textbf{Serial program} \\
+	The serial program can be run by setting OPENMP\_EN and MPI\_EN to OFF in the $\mathrm{CMakeCache.txt}$.
+	
+\item \textbf{OpenMP-code} \\
+	Enable OPENMP\_EN, by setting it ON in $\mathrm{CMakeCache.txt}$. 
+	
+\item \textbf{MPI-code} \\
+	Enable MPI, by setting it ON in $\mathrm{CMakeCache.txt}$. 
+\end{list}
+
+I don't think it is necessary to use parallel processing to solve this particular problem. This conclusion is based on the runtime in the different run modes. The serial code runs is almost constant in the run time. It's run in a couple of microseconds. When I enable OpenMP, the run time is fluctuating a bit more. This is expected since we do fork and join operations. This makes the code to run in milliseconds in some runs, but it can also be as good as the serial code.  
+
+
+
+
+\end{document}

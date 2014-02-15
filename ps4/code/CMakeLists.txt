@@ -1,23 +1,37 @@
-enable_language(C)
+
 cmake_minimum_required(VERSION 2.6)
 project(sum)
 
-set(OPENMP_EN OFF)
-set(MPI_EN    ON)
+enable_language(C)
+
+option(OPENMP_EN "Enable OpenMP?" ON)
+option(MPI_EN  "Enable MPI?"      ON)
 
 if(OPENMP_EN)
-	find_package( OpenMP REQUIRED)
+	find_package(OpenMP)
 	if(OPENMP_FOUND)
 		message("OPENMP FOUND")
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-		add_definitions(-DHAVE_OPENMP)
+		set(COMMON_DEFINITIONS "${COMMON_DEFINITIONS} -DHAVE_OPENMP")
+    		list(APPEND COMMON_C_FLAGS ${OpenMP_C_FLAGS})	
 	endif()
 endif()
 
-add_definitions(-std=c99)
+if(MPI_EN)
+  	find_package(MPI)
+  	if(MPI_FOUND)
+		message("MPI FOUND")
+    		set(COMMON_DEFINITIONS "${COMMON_DEFINITIONS} -DHAVE_MPI")
+    		list(APPEND COMMON_C_FLAGS ${MPI_C_FLAGS})
+    		list(APPEND COMMON_LIBRARIES ${MPI_C_LIBRARIES} ${MPI_Fortran_LIBRARIES})
+    		list(APPEND COMMON_INCLUDE_PATHS ${MPI_C_INCLUDE_PATH})
+  	endif()
+endif()
 
 link_libraries(-lm)
 
+include_directories(${COMMON_INCLUDE_PATHS})
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_C_FLAGS} ${COMMON_DEFINITIONS}")
+
 add_executable(sum sum.c sumlib.c)
+target_link_libraries(sum ${COMMON_LIBRARIES})
