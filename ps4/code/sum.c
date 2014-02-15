@@ -16,6 +16,7 @@
 #define K_MIN  3
 #define PI     4*atan(1)
 
+/*  The v-funtion  */
 double v (int i) { return 1.0/ (i*i);}
 
 /* Taken from the lecturers common.c library */
@@ -52,7 +53,10 @@ int main(int argc, char** argv){
 	size = 1;
 	rank = 0;
 	#endif
-
+	
+	// Set start-time
+	start = WallTime();
+	
 	// Initialize and set the actual s value	
 	s = (PI*PI)/6;
 		
@@ -66,9 +70,7 @@ int main(int argc, char** argv){
 	num_elem = n_max;
 	#endif
 	
-	// Set start-time
-	start = WallTime();
-
+	
 	// Allocate vector for all nodes
 	list = allocate_vector(num_elem);	
 	
@@ -78,25 +80,31 @@ int main(int argc, char** argv){
 		for(i=1; i < size; i++){
 			fill_vector(list, i, num_elem, v, size);
 			MPI_Send(list, num_elem, MPI_DOUBLE, i, tag, MPI_COMM_WORLD);
-		}	
+		}
+		// Make vector for node 0	
 		fill_vector(list, 0, num_elem, v, size);
 
 	} else{
+		// Receive work
 		MPI_Recv(list, num_elem, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD, &status);
-		printf("node %d received a message...", rank);
+		printf("node %d received something...", rank);
 	}
 	#else
+	// If serial/OpenMP, fill the whole list
 	fill_vector(list, 0, num_elem, v, 1);
 	#endif
 	
 
 	for(k = K_MIN; k <= K_MAX; k++){
+		// Find number of elements to sum up
 		#ifdef HAVE_MPI
 		n = pow(2,k) / num_elem;
 		#else
 		n = pow(2,k);
 		#endif
+		// Sum the elements
 		temp_sum = sum_vector(list, n);
+		// Report answer
 		#ifdef HAVE_MPI
 		MPI_Reduce(temp_sum, total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		#else	
