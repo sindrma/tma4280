@@ -39,19 +39,20 @@
 \newpage
 
 % Problem 5
-\section*{Explanation of solution: MPI}
-The MPI-code needs some explanation. The code does the following. First we initialize MPI and set up the variables needed. After that, node 0 is responsible for handing of work to the other nodes. Node 0 in total generates the total problem size, that is, it generates the vectors of length max N ($2^{14}$ in our case) divided by the number of nodes. A vector in a node starts at value of the \emph{rank} and each element has an offset of \emph{rank}. I figured it was better to hand of the vectors needed to solve the sum in (1) with N equal to $2^{14}$, as this minimizes the number of messages passed and gives easier code to grasp. To calculate (1) for smaller N, we simply pick out the elements needed in each of the vectors to calculate the sum.
+\paragraph*{MPI-calls}
+I make use of the following MPI calls in my solution:
 
-Node 0 then simply sends of the vectors to the right nodes. This is done with MPI\_Send(...). The other nodes receives the message by calling MPI\_Recv(...). Both of these calls is blocking. Each time we are done processing a sum at a given value of N, we send the partial sum of to node 0 again to print out the solution. This is accomplished by calling MPI\_Reduce(...) (see the code for the parameters to each of the functions).    
-
-I also make use of MPI\_Wtime() to measure computation-time if MPI is enabled by calling the WallTime()-function (taken from the lecturers common.c library). \\ \\
+%\begin{description}
+%	\item
+%	\item[MPI_Send]
+%\end{description}
 
 % Problem 6
 
 % Problem 7
 
 % Problem 8
-\section*{Floating point operations and work load}
+\paragraph*{Floating point operations and work load}
 When generating the vector(s) we need two additions and one multiplication. That is three floating point operations per vector element.\\
 When summing up elements, with OpenMP enabled, we do one floating point operation per element in the vector. \\ \\
 
@@ -65,6 +66,13 @@ I don't think it is necessary to use parallel processing to solve this particula
 The problem size is to small to benefit from parallel processing when using OpenMP. But if we increase the value of k, it is a benefit. This can easily be seen if we increase the value of K\_MAX (see source code). As an example on my machine, a K\_MAX value of 26 gives a serial computation-time of about 2.1 seconds, but when I run with OpenMP I get a computation time of 1.8 seconds. As the problem size gets bigger, that is a big value of K\_MAX, one should expect the OpenMP code to perform better given a enough memory and multicore-chip. 
 
 Something about MPI on when the bug is fixed.... 
+
+\section*{Explanation of solution: MPI}
+The MPI-code needs some explanation. The code does the following. First we initialize MPI and set up the variables needed. After that, node 0 is responsible for handing of work to the other nodes. Node 0 in total generates the total problem size, that is, it generates the vectors of length max N ($2^{14}$ in our case) divided by the number of nodes. A vector in a node starts at value of the \emph{rank} and each element has an offset of \emph{rank}. I figured it was better to hand of the vectors needed to solve the sum in (1) with N equal to $2^{14}$, as this minimizes the number of messages passed and gives easier code to grasp. To calculate (1) for smaller N, we simply pick out the elements needed in each of the vectors to calculate the sum.
+
+Node 0 then simply sends of the vectors to the right nodes. This is done with MPI\_Send(...). The other nodes receives the message by calling MPI\_Recv(...). Both of these calls is blocking. Each time we are done processing a sum at a given value of N, we send the partial sum of to node 0 again to print out the solution. This is accomplished by calling MPI\_Reduce(...).    
+
+I also make use of MPI\_Wtime() to measure computation-time if MPI is enabled by calling the WallTime()-function (taken from the lecturers common.c library). \\ \\
 
 
 

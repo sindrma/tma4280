@@ -102,24 +102,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named sum
+# Target rules for targets named ps4
 
 # Build rule for target.
-sum: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sum
-.PHONY : sum
+ps4: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ps4
+.PHONY : ps4
 
 # fast build rule for target.
-sum/fast:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/build
-.PHONY : sum/fast
+ps4/fast:
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/build
+.PHONY : ps4/fast
 
 sum.o: sum.c.o
 .PHONY : sum.o
 
 # target to build an object file
 sum.c.o:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sum.c.o
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sum.c.o
 .PHONY : sum.c.o
 
 sum.i: sum.c.i
@@ -127,7 +127,7 @@ sum.i: sum.c.i
 
 # target to preprocess a source file
 sum.c.i:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sum.c.i
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sum.c.i
 .PHONY : sum.c.i
 
 sum.s: sum.c.s
@@ -135,7 +135,7 @@ sum.s: sum.c.s
 
 # target to generate assembly for a file
 sum.c.s:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sum.c.s
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sum.c.s
 .PHONY : sum.c.s
 
 sumlib.o: sumlib.c.o
@@ -143,7 +143,7 @@ sumlib.o: sumlib.c.o
 
 # target to build an object file
 sumlib.c.o:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sumlib.c.o
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sumlib.c.o
 .PHONY : sumlib.c.o
 
 sumlib.i: sumlib.c.i
@@ -151,7 +151,7 @@ sumlib.i: sumlib.c.i
 
 # target to preprocess a source file
 sumlib.c.i:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sumlib.c.i
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sumlib.c.i
 .PHONY : sumlib.c.i
 
 sumlib.s: sumlib.c.s
@@ -159,7 +159,7 @@ sumlib.s: sumlib.c.s
 
 # target to generate assembly for a file
 sumlib.c.s:
-	$(MAKE) -f CMakeFiles/sum.dir/build.make CMakeFiles/sum.dir/sumlib.c.s
+	$(MAKE) -f CMakeFiles/ps4.dir/build.make CMakeFiles/ps4.dir/sumlib.c.s
 .PHONY : sumlib.c.s
 
 # Help Target
@@ -169,8 +169,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... ps4"
 	@echo "... rebuild_cache"
-	@echo "... sum"
 	@echo "... sum.o"
 	@echo "... sum.i"
 	@echo "... sum.s"

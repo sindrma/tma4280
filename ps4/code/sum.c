@@ -53,7 +53,7 @@ int main(int argc, char** argv){
 	size = 1;
 	rank = 0;
 	#endif
-	
+	/*
 	// Set start-time
 	//start = WallTime();
 	
@@ -72,9 +72,9 @@ int main(int argc, char** argv){
 	
 	
 	// Allocate vector for all nodes
-	//list = allocate_vector(num_elem);	
+	list = allocate_vector(num_elem);	
 	
-	/*#ifdef HAVE_MPI
+	#ifdef HAVE_MPI
 	if(rank == 0){
 		// Send of work...
 		for(i=1; i < size; i++){
@@ -112,14 +112,15 @@ int main(int argc, char** argv){
 		total_sum = temp_sum;
 		#endif
 		if(rank == 0)  printf("n=%d, s_n=%e, s-s_n=%e\n", n, total_sum, s-total_sum);	
-	}*/
-	printf("Processor: %d\n", rank);
+	}
 
 	// Report end-time
 	//if(rank == 0) printf("elapsed time: %lf\n", WallTime()-start);
 	
 	// Free memory
-	free_vector(list);
+	//free_vector(list); 
+	*/
+	printf("Processor: %d\n", rank);
 	
 	#ifdef HAVE_MPI
 	// Finalize MPI

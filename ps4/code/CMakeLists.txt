@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 2.6)
-project(sum)
+project(ps4)
 
 enable_language(C)
 
@@ -33,5 +33,5 @@ include_directories(${COMMON_INCLUDE_PATHS})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_C_FLAGS} ${COMMON_DEFINITIONS}")
 
-add_executable(sum sum.c sumlib.c)
-target_link_libraries(sum ${COMMON_LIBRARIES})
+add_executable(ps4 sum.c sumlib.c)
+target_link_libraries(ps4 ${COMMON_LIBRARIES})
