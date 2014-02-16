@@ -20,7 +20,7 @@
 double v (int i) { return 1.0/ (i*i);}
 
 /* Taken from the lecturers common.c library */
-double WallTime ()
+/*double WallTime ()
 {
 	#ifdef HAVE_MPI
  	 return MPI_Wtime();
@@ -31,7 +31,7 @@ double WallTime ()
  	 gettimeofday(&tmpTime,NULL);
  	 return tmpTime.tv_sec + tmpTime.tv_usec/1.0e6;
 	#endif
-}
+}*/
 
 int main(int argc, char** argv){
 	// Initialize some needed values...
@@ -55,7 +55,7 @@ int main(int argc, char** argv){
 	#endif
 	
 	// Set start-time
-	start = WallTime();
+	//start = WallTime();
 	
 	// Initialize and set the actual s value	
 	s = (PI*PI)/6;
@@ -72,9 +72,9 @@ int main(int argc, char** argv){
 	
 	
 	// Allocate vector for all nodes
-	list = allocate_vector(num_elem);	
+	//list = allocate_vector(num_elem);	
 	
-	#ifdef HAVE_MPI
+	/*#ifdef HAVE_MPI
 	if(rank == 0){
 		// Send of work...
 		for(i=1; i < size; i++){
@@ -86,6 +86,7 @@ int main(int argc, char** argv){
 
 	} else{
 		// Receive work
+		printf("Entered else with rank %d", rank);
 		MPI_Recv(list, num_elem, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD, &status);
 		printf("node %d received something...", rank);
 	}
@@ -98,7 +99,7 @@ int main(int argc, char** argv){
 	for(k = K_MIN; k <= K_MAX; k++){
 		// Find number of elements to sum up
 		#ifdef HAVE_MPI
-		n = pow(2,k) / num_elem;
+		n = pow(2,k) / size;
 		#else
 		n = pow(2,k);
 		#endif
@@ -111,10 +112,11 @@ int main(int argc, char** argv){
 		total_sum = temp_sum;
 		#endif
 		if(rank == 0)  printf("n=%d, s_n=%e, s-s_n=%e\n", n, total_sum, s-total_sum);	
-	}
+	}*/
+	printf("Processor: %d\n", rank);
 
 	// Report end-time
-	printf("elapsed time: %lf\n", WallTime()-start);
+	//if(rank == 0) printf("elapsed time: %lf\n", WallTime()-start);
 	
 	// Free memory
 	free_vector(list);
