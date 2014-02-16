@@ -106,7 +106,7 @@ int main(int argc, char** argv){
 		temp_sum = sum_vector(list, n);
 		// Report answer
 		#ifdef HAVE_MPI
-		MPI_Reduce(temp_sum, total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+		MPI_Reduce(&temp_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 		#else	
 		total_sum = temp_sum;
 		#endif
