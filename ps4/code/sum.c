@@ -20,7 +20,7 @@
 double v (int i) { return 1.0/ (i*i);}
 
 /* Taken from the lecturers common.c library */
-/*double WallTime ()
+double WallTime ()
 {
 	#ifdef HAVE_MPI
  	 return MPI_Wtime();
@@ -31,7 +31,7 @@ double v (int i) { return 1.0/ (i*i);}
  	 gettimeofday(&tmpTime,NULL);
  	 return tmpTime.tv_sec + tmpTime.tv_usec/1.0e6;
 	#endif
-}*/
+}
 
 int main(int argc, char** argv){
 	// Initialize some needed values...
@@ -53,9 +53,9 @@ int main(int argc, char** argv){
 	size = 1;
 	rank = 0;
 	#endif
-	/*
+	
 	// Set start-time
-	//start = WallTime();
+	start = WallTime();
 	
 	// Initialize and set the actual s value	
 	s = (PI*PI)/6;
@@ -98,11 +98,7 @@ int main(int argc, char** argv){
 
 	for(k = K_MIN; k <= K_MAX; k++){
 		// Find number of elements to sum up
-		#ifdef HAVE_MPI
 		n = pow(2,k) / size;
-		#else
-		n = pow(2,k);
-		#endif
 		// Sum the elements
 		temp_sum = sum_vector(list, n);
 		// Report answer
@@ -115,12 +111,12 @@ int main(int argc, char** argv){
 	}
 
 	// Report end-time
-	//if(rank == 0) printf("elapsed time: %lf\n", WallTime()-start);
+	if(rank == 0) printf("elapsed time: %lf\n", WallTime()-start);
 	
 	// Free memory
-	//free_vector(list); 
-	*/
-	printf("Processor: %d\n", rank);
+	free_vector(list); 
+	
+	//printf("Processor: %d\n", rank);
 	
 	#ifdef HAVE_MPI
 	// Finalize MPI
