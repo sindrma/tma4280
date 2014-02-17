@@ -49,11 +49,12 @@ int main(int argc, char** argv){
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	tag = 100;
+        printf("here\n");
 	#else
 	size = 1;
 	rank = 0;
 	#endif
-	
+		
 	// Set start-time
 	start = WallTime();
 	
@@ -116,7 +117,7 @@ int main(int argc, char** argv){
 	// Free memory
 	free_vector(list); 
 	
-	//printf("Processor: %d\n", rank);
+	printf("Processor: %d\n", rank);
 	
 	#ifdef HAVE_MPI
 	// Finalize MPI
