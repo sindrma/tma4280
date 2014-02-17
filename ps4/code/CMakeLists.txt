@@ -27,7 +27,7 @@ if(MPI_EN)
   	endif()
 endif()
 
-link_libraries(-lm)
+link_libraries(-lm -lmpl)
 
 include_directories(${COMMON_INCLUDE_PATHS})
 
