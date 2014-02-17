@@ -35,7 +35,7 @@ double WallTime ()
 
 int main(int argc, char** argv){
 	// Initialize some needed values...
-	int n, t1, t2, n_max, k, num_elem, i;
+	int n, n_temp, t1, t2, n_max, k, num_elem, i;
 	double s, temp_sum, total_sum, start, end;
 	double* list;
 	char test[20]; 
@@ -49,7 +49,6 @@ int main(int argc, char** argv){
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	tag = 100;
-        printf("here\n");
 	#else
 	size = 1;
 	rank = 0;
@@ -87,9 +86,7 @@ int main(int argc, char** argv){
 
 	} else{
 		// Receive work
-		printf("Entered else with rank %d", rank);
 		MPI_Recv(list, num_elem, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD, &status);
-		printf("node %d received something...", rank);
 	}
 	#else
 	// If serial/OpenMP, fill the whole list
@@ -99,9 +96,9 @@ int main(int argc, char** argv){
 
 	for(k = K_MIN; k <= K_MAX; k++){
 		// Find number of elements to sum up
-		n = pow(2,k) / size;
+		n_temp = pow(2,k) / size;
 		// Sum the elements
-		temp_sum = sum_vector(list, n);
+		temp_sum = sum_vector(list, n_temp);
 		// Report answer
 		#ifdef HAVE_MPI
 		MPI_Reduce(&temp_sum, &total_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -117,8 +114,7 @@ int main(int argc, char** argv){
 	// Free memory
 	free_vector(list); 
 	
-	printf("Processor: %d\n", rank);
-	
+		
 	#ifdef HAVE_MPI
 	// Finalize MPI
 	MPI_Finalize();
