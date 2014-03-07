@@ -9,7 +9,7 @@
 #endif
 
 #ifdef HAVE_MPI
-#include <mpi.h>
+#include "mpi.h"
 #endif
 
 #define K_MAX  14
@@ -69,8 +69,7 @@ int main(int argc, char** argv){
 	#else
 	num_elem = n_max;
 	#endif
-	
-	
+		
 	// Allocate vector for all nodes
 	list = allocate_vector(num_elem);	
 	
