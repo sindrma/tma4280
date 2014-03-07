@@ -104,7 +104,10 @@ int main(int argc, char** argv){
 		#else	
 		total_sum = temp_sum;
 		#endif
-		if(rank == 0)  printf("n=%d, s_n=%e, s-s_n=%e\n", n, total_sum, s-total_sum);	
+		if(rank == 0){  
+			n = n_temp*size;
+			printf("n=%d, s_n=%e, s-s_n=%e\n", n, total_sum, s-total_sum);
+		}	
 	}
 
 	// Report end-time
